@@ -1,0 +1,19 @@
+---
+# tasks file for rsyslog
+- name: Create main rsyslog configuration
+  template:
+    src: "rsyslog.conf.j2"
+    dest: "{{ rsyslog_conf_file }}"
+  notify: reload rsyslog
+
+- name: include remote server if need
+  template:
+    src: "remote.conf.j2"
+    dest: "/etc/rsyslog.d/remote.conf"
+  when: remote_server == "True"
+
+- name: copy custom file
+  template: src={{item.src}} dest={{item.dest}}
+  with_items:
+    - { src: 'templates/50-default.conf.j2', dest: '/etc/rsyslog.d/50-default.conf' }
+    - { src: 'files/20-ufw.conf', dest: '/etc/rsyslog.d/20-ufw.conf' }

@@ -1,0 +1,4 @@
+---
+# handlers file for rsyslog
+- name: reload rsyslog
+  systemd: name=rsyslog state=reloaded

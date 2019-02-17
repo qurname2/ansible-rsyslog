@@ -1,0 +1,40 @@
+---
+# defaults file for rsyslog
+rsyslog_modules: ["imuxsock", "imklog", "immark"]
+remote_server: "False"
+remote_server_ip: "192.168.0.10"
+remote_port: "514"
+work_directory: "/var/spool/rsyslog"
+rsyslog_conf_file: "/etc/rsyslog.conf"
+#rsyslog_remote_outputs: False
+rsyslog_localfiles:
+  - name: '/var/log/auth.log'
+    selectors: 'auth,authpriv.*'
+  - name: '/var/log/syslog'
+    selectors:
+      - '*.*'
+      - 'auth,authpriv.none'
+  - name: '/var/log/cron.log'
+    selectors: 'cron.*'
+  - name: '/var/log/daemon.log'
+    selectors: 'daemon.*'
+  - name: '/var/log/kern.log'
+    selectors: 'kern.*'
+  - name: '/var/log/mail.log'
+    selectors: 'mail.*'
+  - name: '/var/log/user.log'
+    selectors: 'user.*'
+  - name: '/var/log/mail.err'
+    selectors: 'mail.err'
+  - name: '/var/log/news/news.crit'
+    selectors: 'news.crit'
+  - name: '/var/log/news/news.err'
+    selectors: 'news.err'
+  - name: '-/var/log/news/news.notice'
+    selectors: 'news.notice'
+rsyslog_devices:
+  - name: ':omusrmsg:*'
+    selectors: '*.emerg'
+rsyslog_defaults: '{{ rsyslog_localfiles
+	              |union(rsyslog_devices) 
+                }}'

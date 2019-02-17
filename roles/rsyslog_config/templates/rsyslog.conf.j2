@@ -1,0 +1,13 @@
+###############
+### MODULES ###
+###############
+{% for module in rsyslog_modules %}
+module(load="{{ module }}")
+{% endfor %}
+
+$IncludeConfig /etc/rsyslog.d/*.conf
+
+$KLogPermitNonKernelFacility on
+$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+$RepeatedMsgReduction on
+$WorkDirectory "{{ work_directory }}"

@@ -1,0 +1,10 @@
+{{ ansible_managed|comment }}
+
+# Set our initial redirects here to ensure we catch everything
+{% for item in rsyslog_defaults %}
+{%   if item.name|length>0 %}
+{%     set selector = [item.selectors|default('*.*')]|flatten|join(';') %}
+{%     set suffix = '' %}
+{{ selector }} {{ item.name }}{{ suffix }}
+{%   endif %}
+{% endfor %}
